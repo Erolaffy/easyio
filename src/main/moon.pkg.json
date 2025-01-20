@@ -1,0 +1,6 @@
+{
+  "is-main": true,
+  "import": [
+    "Erolaffy/easy-io/lib"
+  ]
+}
