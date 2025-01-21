@@ -1,5 +1,5 @@
 {
-  "name": "Erolaffy/easy-io",
+  "name": "Erolaffy/easyio",
   "version": "0.1.0",
   "deps": {
     "moonbitlang/x": "0.4.18"
@@ -7,7 +7,7 @@
   "readme": "README.md",
   "repository": "",
   "license": "Apache-2.0",
-  "keywords": ["easy-io"],
+  "keywords": ["easyio"],
   "description": "",
   "source": "src"
 }

@@ -1,6 +1,7 @@
 {
   "is-main": true,
   "import": [
-    "Erolaffy/easy-io/lib"
+    {"path":"Erolaffy/easyio","alias": "eio"},
+    "moonbitlang/x/fs"
   ]
 }
