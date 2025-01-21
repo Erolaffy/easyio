@@ -1,1 +1,1 @@
-# erolaffy/easy-io
+# erolaffy/easyio
