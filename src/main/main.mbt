@@ -6,6 +6,6 @@ fn main{
   // @eio.write_insert("test/a.txt","|",77
   // println(@eio.read_lines_toarray("s"))
   // println(@eio.read_lines_toarray("test/a.txt"))
-  let _=@eio.read_lines_toarray("test/a.txt",start=1)
+  // let _=@eio.read_lines_toarray("test/a.txt",start=1)
 
 }

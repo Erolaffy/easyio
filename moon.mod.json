@@ -5,7 +5,7 @@
     "moonbitlang/x": "0.4.18"
   },
   "readme": "README.md",
-  "repository": "",
+  "repository": "https://github.com/Erolaffy/easyio.git",
   "license": "Apache-2.0",
   "keywords": ["easyio"],
   "description": "This is a package that encapsulates moonbitlang/x/fs, aiming to make file operations more convenient.",
