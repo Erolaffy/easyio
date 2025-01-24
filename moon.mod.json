@@ -1,6 +1,6 @@
 {
   "name": "Erolaffy/easyio",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "deps": {
     "moonbitlang/x": "0.4.18"
   },

@@ -1,65 +1,69 @@
-fn create_dir(path:String) -> Unit{
-    let path1 = path.substring(start=0,end=path.last_index_of("/"))
-    @fs.create_dir(path=path1)
+fn create_dir(self: File) -> Unit{
+  let dir_path = self.dir_path
+  if not(dir_path.is_empty()) {
+    @fs.create_dir(path = dir_path)
+  }
+    
 }
 
-///| Writes a string to a file.If the path does not exist, it will be created automatically.
+///| Writes a string to a file.If the file does not exist, it will be created automatically.
 ///
 /// # Parameters
-/// - `path`: A `String` representing the file path.
+/// - `self`: A File to write.
 /// - `content`: A `String` containing the content to be written to the file.
-pub fn write(path:String,content:String) -> Unit{
-  if not(@fs.path_exists(path~)) {
-    create_dir(path)
+/// 
+/// Example:
+///
+/// ```moonbit
+/// test {
+///  let f_o = @eio.open("a.txt","r")
+///  guard f_o.is_ok() else{println(f_o)}
+///  let f = f_o.unwrap()
+///  fwrite("1\n2\n3\n4")
+/// }
+pub fn write(self: File,content: String) -> Unit{
+  if not(@fs.path_exists(path = self.file_abs_path)) {
+    create_dir(self)
   }
-  @fs.write_string_to_file(path~,content~)
+  @fs.write_string_to_file(path = self.file_abs_path,content~)
 }
 
 ///| Append a string to the end of a file.
 ///
-/// # Parameters
-/// - `path`: A `String` representing the file path.
-/// - `content`: A `String` containing the content to be appended to the file.
-pub fn write_append(path:String,content:String) -> Unit{
-    write(path,read(path)+content)
+/// Example:
+///
+/// ```moonbit
+/// test {
+///  let f_o = @eio.open("a.txt","r")
+///  guard f_o.is_ok() else{println(f_o)}
+///  let f = f_o.unwrap()
+///  f.write_append("4\n5")
+/// }
+pub fn write_append(self: File,content: String) -> Unit {
+  let c = @fs.read_file_to_string?(path = self.file_abs_path).unwrap()
+  write(self,c+content)
 }
 
-///| Insert a string at the specified position in the file.
-/// 
-/// # Parameters
-/// - `path`: A `String` representing the file path.
-/// - `content`: A `String` containing the content to be inserted into the file.
-/// - `offset`: Offset relative to the beginning of the file.
-pub fn write_insert(path:String,content:String,offset:Int) -> Unit{
-    let orign = read(path)
-    if offset<0 || offset > orign.length(){
-        println("Err : offset is invalid")
-    }else{
-        let l_t = orign.substring(end=offset)
-        let r_t = orign.substring(start=offset,end=orign.length())
-        write(path,l_t+content+r_t)
-    }
-    
-}
 
-///| Insert a string at the specified line in the file.
-/// 
-/// # Parameters
-/// - `path`: A `String` representing the file path.
-/// - `content`: A `String` containing the content to be inserted into the file.
-/// - `line`: Insert into the line number of the file.
-pub fn write_insert_line(path:String,content:String,line:Int) -> Unit{
-    let orign = read_lines_toarray(path)
-    if line<0 || line > file_line(path){
-        println("Err : offset is invalid")
-    }else{
-        let l_t = orign[0:line]
-        let r_t = orign[line:file_line(path)]
-        let mut res = ""
-        l_t.each(fn(s){res+=s+"\n"})
-        res+=content+"\n"
-        r_t.each(fn(s){res+=s+"\n"})
-        write(path,res)
-    }
-    
+///| Append some lines to the end of a file.
+///
+/// Example:
+///
+/// ```moonbit
+/// test {
+///  let f_o = @eio.open("a.txt","r")
+///  guard f_o.is_ok() else{println(f_o)}
+///  let f = f_o.unwrap()
+///  f.write_lines(["1","2","3"]))
+/// }
+pub fn write_lines(self: File,contents: Array[String]) -> Unit {
+  let c = @fs.read_file_to_string?(path = self.file_abs_path).unwrap()
+  let mut wa = ""
+  if c[c.length()-1] != '\n'{wa+="\n"}
+
+  contents.each(fn(s){
+    wa += s + "\n"
+  })
+  write_append(self, wa)
+  
 }

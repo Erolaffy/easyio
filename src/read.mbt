@@ -1,106 +1,65 @@
-///| Reads the entire contents of a file into a string.If the file does not exist, return Err.
-///
-/// # Parameters
-/// - `path`: A `String` representing the file path.
+fn get_line(self: File) -> Int {
+  read_lines(self).length()
+}
+
+
+///| Reads the entire contents of a file into a string.
 ///
 /// # Returns
 /// A `String` containing the file contents.
-pub fn read(path:String) -> String{
-  let res = @fs.read_file_to_string?(path~)
-  if res.is_err() {
-    return res.to_string()
-  }else{
-    return res.unwrap()
-  }
-}
-
-///| Reads the number of lines in the file.
-///
-/// # Parameters
-/// - `path`: A `String` representing the file path.
-///
-/// # Returns
-/// A `Int` containing the file lines.
-pub fn file_line(path:String) -> Int {
-  let res = read(path)
-  if @fs.path_exists(path~) {
-    res.split("\n").to_array().length()
-  }else{
-    -1
-  }
-}
-
-///| Reads the content of a specified line in the file.
-///
-/// # Parameters
-/// - `path`: A `String` representing the file path.
-/// - `line`: A specified line in the file.
-///
-/// # Returns
-/// A `String` containing the content of a specified line.
-pub fn read_line(path:String,line:Int) -> String {
-  if @fs.path_exists(path~){
-    if line-1 < 0 || line > file_line(path) {
-      "Err : line is invalid"
-    }else{
-      read(path).split("\n").to_array()[line-1]
-    }
-  }else{
-    "Err : file \{path} not found"
-  }
+pub fn read(self: File) -> String{
+  let c = @fs.read_file_to_string?(path=self.file_abs_path)
   
+  c.unwrap()
 }
 
-///| Reads the specified several lines of file and return them in the form of an array.
-///
-/// # Parameters
-/// - `path`: A `String` representing the file path.
-/// - `start`: The starting line in the file.
-/// - `end`: The ending line in the file.
+
+///| Reading the content of a line in the file and automatically moving to the next line.
 ///
 /// # Returns
-/// A `Array` containing the content of specified lines.
+/// A `String` containing the content of a line.
 ///
 /// Example:
 ///
 /// ```moonbit
 /// test {
-///   let path = "test/a.txt"
-///   assert_eq!(@eio.read_lines_toarray(path,start=1,end=3), ["2","3"])
-///   assert_eq!(@eio.read_lines_toarray(path), ["1","2","3","4","5"])
+///  let f_o = @eio.open("a.txt","r")
+///  guard f_o.is_ok() else{println(f_o)}
+///  let f = f_o.unwrap()
+///  assert_eq!(@eio.read_line()), "1")
+///  assert_eq!(@eio.read_line()), "2")
+///  assert_eq!(@eio.read_line()), "3")
 /// }
-pub fn read_lines_toarray(path:String,start~:Int=0,end~:Int=file_line(path)) -> Array[String] {
-  if @fs.path_exists(path~){
-    read(path).split("\n").to_array()[start:end].iter().to_array()
-  }else{
-    []
+pub fn read_line(self: File) -> String {
+  let arr = read_lines(self)
+
+  guard arr.length() > 0 else { "" }
+  let line = arr[self.curr_line-1]
+  
+  self.curr_line += 1
+  if self.curr_line > get_line(self) {
+    self.curr_line = 1
   }
+
+  line
 }
 
-///| Reads the specified several lines of file.
-///
-/// # Parameters
-/// - `path`: A `String` representing the file path.
-/// - `start`: The starting line in the file.
-/// - `end`: The ending line in the file.
+///| Reading the content of the file and returning an array composed of the content of each line.
 ///
 /// # Returns
-/// A `String` containing the content of specified lines.
-/// 
+/// A `Array[String]` containing the content of the file.
+///
 /// Example:
 ///
 /// ```moonbit
 /// test {
-///   let path = "test/a.txt"
-///   assert_eq!(@eio.read_lines(path,start=1,end=3), "2\n3\n")
-///   assert_eq!(@eio.read_lines(path), "1\n2\n3\n4\n5\n")
+///  let f_o = @eio.open("a.txt","r")
+///  guard f_o.is_ok() else{println(f_o)}
+///  let f = f_o.unwrap()
+///  assert_eq!(@eio.read_lines()), ["1","2","3","4","5"])
 /// }
-pub fn read_lines(path:String,start~:Int=0,end~:Int=file_line(path)) -> String {
-  if @fs.path_exists(path~){
-    let mut res = ""
-    read_lines_toarray(path,start~,end~).each(fn(s){res+=s+"\n"})
-    res
-  }else{
-    "Err : file \{path} not found"
-  }
+pub fn read_lines(self: File) -> Array[String] {
+  let c = @fs.read_file_to_string?(path=self.file_abs_path).unwrap()
+
+  c.split("\n").collect()
 }
