@@ -7,7 +7,7 @@
 /// # Returns
 /// `File` if file is exist,else `Err(FileError)`
 pub fn open(path: String,mod: String) -> Result[File,FileError] {
-  let j = @fs.is_file?(path~)
+  let j = @fs.is_file?(path)
   let file_mod = match mod{
     "w" => Write
     "r" => Read

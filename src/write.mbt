@@ -1,7 +1,7 @@
 fn create_dir(self: File) -> Unit{
   let dir_path = self.dir_path
   if not(dir_path.is_empty()) {
-    @fs.create_dir(path = dir_path)
+    let _ = @fs.create_dir?(dir_path)
   }
     
 }
@@ -22,10 +22,10 @@ fn create_dir(self: File) -> Unit{
 ///  fwrite("1\n2\n3\n4")
 /// }
 pub fn write(self: File,content: String) -> Unit{
-  if not(@fs.path_exists(path = self.file_abs_path)) {
+  if not(@fs.path_exists(self.file_abs_path)) {
     create_dir(self)
   }
-  @fs.write_string_to_file(path = self.file_abs_path,content~)
+  let _ = @fs.write_string_to_file?(self.file_abs_path,content)
 }
 
 ///| Append a string to the end of a file.
@@ -40,7 +40,7 @@ pub fn write(self: File,content: String) -> Unit{
 ///  f.write_append("4\n5")
 /// }
 pub fn write_append(self: File,content: String) -> Unit {
-  let c = @fs.read_file_to_string?(path = self.file_abs_path).unwrap()
+  let c = @fs.read_file_to_string?(self.file_abs_path).unwrap()
   write(self,c+content)
 }
 
@@ -57,7 +57,7 @@ pub fn write_append(self: File,content: String) -> Unit {
 ///  f.write_lines(["1","2","3"])
 /// }
 pub fn write_lines(self: File,contents: Array[String]) -> Unit {
-  let c = @fs.read_file_to_string?(path = self.file_abs_path).unwrap()
+  let c = @fs.read_file_to_string?(self.file_abs_path).unwrap()
   let mut wa = ""
   if c[c.length()-1] != '\n'{wa+="\n"}
 

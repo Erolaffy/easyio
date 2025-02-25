@@ -8,7 +8,7 @@ fn get_line(self: File) -> Int {
 /// # Returns
 /// A `String` containing the file contents.
 pub fn read(self: File) -> String{
-  let c = @fs.read_file_to_string?(path=self.file_abs_path)
+  let c = @fs.read_file_to_string?(self.file_abs_path)
   
   c.unwrap()
 }
@@ -57,10 +57,10 @@ pub fn read_line(self: File) -> String? {
 ///  let f_o = @eio.open("a.txt","r")
 ///  guard f_o.is_ok() else{println(f_o)}
 ///  let f = f_o.unwrap()
-///  assert_eq!(@eio.read_lines()), ["1","2","3","4","5"])
+///  assert_eq!(@eio.read_lines(), ["1","2","3","4","5"])
 /// }
 pub fn read_lines(self: File) -> Array[String] {
-  let c = @fs.read_file_to_string?(path=self.file_abs_path).unwrap()
+  let c = @fs.read_file_to_string?(self.file_abs_path).unwrap()
 
   c.split("\n").collect()
 }
