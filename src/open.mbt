@@ -16,7 +16,6 @@ pub fn open(path: String,mod: String) -> Result[File,FileError] {
 
   guard j.is_ok() || file_mod == Write else { Err(FileNotFound) }
   guard file_mod != FileMod::None else { Err(ModIsInvalid) }
-  println(1)
   let path_arr = path_handle(path)
   let file = {file_name: path_arr[1],
                     dir_path: path_arr[0],
@@ -25,6 +24,5 @@ pub fn open(path: String,mod: String) -> Result[File,FileError] {
                     curr_offset: 0}
   file.curr_line = 1
   file.curr_offset = 1
-println(2)
   Ok(file)
 }

@@ -26,22 +26,23 @@ pub fn read(self: File) -> String{
 ///  let f_o = @eio.open("a.txt","r")
 ///  guard f_o.is_ok() else{println(f_o)}
 ///  let f = f_o.unwrap()
-///  assert_eq!(@eio.read_line()), "1")
-///  assert_eq!(@eio.read_line()), "2")
-///  assert_eq!(@eio.read_line()), "3")
+///  assert_eq!(@eio.read_line(), "1")
+///  assert_eq!(@eio.read_line(), "2")
+///  assert_eq!(@eio.read_line(), "3")
 /// }
-pub fn read_line(self: File) -> String {
+pub fn read_line(self: File) -> String? {
   let arr = read_lines(self)
 
-  guard arr.length() > 0 else { "" }
+  guard arr.length() > 0 else { None }
   let line = arr[self.curr_line-1]
   
   self.curr_line += 1
   if self.curr_line > get_line(self) {
-    self.curr_line = 1
+    self.curr_line = -1
+
   }
 
-  line
+  Some(line)
 }
 
 ///| Reading the content of the file and returning an array composed of the content of each line.

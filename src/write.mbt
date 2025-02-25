@@ -54,7 +54,7 @@ pub fn write_append(self: File,content: String) -> Unit {
 ///  let f_o = @eio.open("a.txt","r")
 ///  guard f_o.is_ok() else{println(f_o)}
 ///  let f = f_o.unwrap()
-///  f.write_lines(["1","2","3"]))
+///  f.write_lines(["1","2","3"])
 /// }
 pub fn write_lines(self: File,contents: Array[String]) -> Unit {
   let c = @fs.read_file_to_string?(path = self.file_abs_path).unwrap()
