@@ -19,7 +19,7 @@ fn create_dir(self: File) -> Unit{
 ///  let f_o = @eio.open("a.txt","r")
 ///  guard f_o.is_ok() else{println(f_o)}
 ///  let f = f_o.unwrap()
-///  fwrite("1\n2\n3\n4")
+///  f.write("1\n2\n3\n4")
 /// }
 pub fn write(self: File,content: String) -> Unit{
   if not(@fs.path_exists(self.file_abs_path)) {
