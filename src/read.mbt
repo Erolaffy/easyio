@@ -34,12 +34,12 @@ pub fn read_line(self: File) -> String? {
   let arr = read_lines(self)
 
   guard arr.length() > 0 else { None }
+  guard self.curr_line != -1 else { None }
   let line = arr[self.curr_line-1]
   
   self.curr_line += 1
   if self.curr_line > get_line(self) {
     self.curr_line = -1
-
   }
 
   Some(line)
